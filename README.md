@@ -28,7 +28,7 @@ RECOGNITION**, <a href="http://arxiv.org/abs/1912.00846">[paper]</a>
 
 
 ### [source code]
-- repository contains code for following models
+- repository contains code for following models  (TBD soon)
 	 > Attentive Modality Hopping (AMH) <br>
 
 
