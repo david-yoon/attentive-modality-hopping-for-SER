@@ -20,10 +20,31 @@ RECOGNITION**, <a href="http://arxiv.org/abs/1912.00846">[paper]</a>
 - download IEMOCAP data from its original web-page (license agreement is required)
 
 
-### [preprocessed-data schema (our approach)]
+### [preprocessing (our approach)]
 - Please refer our previous work that use same preprocessing (audio, text): <a href="https://github.com/david-yoon/multimodal-speech-emotion">[click] </a>
-- If you want to download the "preprocessed corpus" from us directly, please send us an email after getting the license from IEMOCAP team.
-- We cannot provide ASR-processed transcription due to the license issue (commercial API), however, we assume that it is moderately easy to extract ASR-transcripts from the audio signal by oneself. (we used google-cloud-speech-api)
+- For video modality:
+	- We first split each video frame into two sub-frames so that each segment contains only one actor.
+	- Then we crop the center of each frame with size 224*224 to focus on the actor and to remove background in the video frame.
+	-  Finally, we extract 2,048-dimensional visual features from each video data using pretrained ResNet-101 at a frame rate of 3 per second.
+- Format of the data for our experiments:
+	> Audio: [#samples, 1000, 120] - (#sampels, sequencs(max 10s), dims) <br>
+	> Text (index) : [#samples, 128] - (#sampels, sequencs(max)) <br>
+	> Video: [#samples, 32, 2048] - (#sampels, sequencs (max 10.6s), dims) <br>
+- Emotion Classes :
+
+  |    class   | #samples |
+  |:----------:|----------:|
+  |    angry   |    1,103 |
+  |   excited  |    1,041 |
+  |    happy   |      595 |
+  |     sad    |    1,084 |
+  | frustrated |    1,849 |
+  |  surprise  |      107 |
+  |   neutral  |    1,708 |
+
+- If you want to use the same processed-data of our experiments, please drop us an email with the IEMOCAP license.
+- We cannot provide ASR-processed transcription due to the license issue (commercial API); however, we assume that it is moderately easy to extract ASR-transcripts from the audio signal by oneself (we used google-cloud-speech-API).
+
 
 
 
@@ -46,4 +67,9 @@ RECOGNITION**, <a href="http://arxiv.org/abs/1912.00846">[paper]</a>
 
 ### [cite]
 - Please cite our paper, when you use our code | model | dataset
->
+	> @article{yoon2019attentive,<br>
+  title={Attentive Modality Hopping Mechanism for Speech Emotion Recognition},<br>
+  author={Yoon, Seunghyun and Dey, Subhadeep and Lee, Hwanhee and Jung, Kyomin},<br>
+  journal={arXiv preprint arXiv:1912.00846},<br>
+  year={2019}<br>
+}
