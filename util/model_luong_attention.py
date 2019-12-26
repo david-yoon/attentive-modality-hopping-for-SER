@@ -33,7 +33,7 @@ def luong_attention( batch_size, target, condition, batch_seq, max_len, hidden_d
     
     
     """
-    # pad 부분을 -inf 값으로 대체 --> 그래야 softmax 후 0으로 떨어짐
+    # pad => -inf
     """
     mask = tf.sequence_mask( lengths=batch_seq, maxlen=max_len, dtype=tf.float32 )
     mask_value = -tf.ones_like( mask ) * tf.float32.max
@@ -91,7 +91,7 @@ def luong_attention_mul_condition( batch_size, target, condition, target_dim, co
     dot = tf.multiply(tmp_target, condition)
     dot = tf.reduce_sum(dot, axis=2) + attn_bias
     
-    # pad 부분을 작은 값으로 대체 --> 그래야 softmax 후 0으로 떨어짐
+    # pad -> -inf
     pad_position = tf.equal(tf.reshape(dot, [batch_size, max_target_encoder_length]), 0.0)
     base = tf.to_float(pad_position) * -1e9
     

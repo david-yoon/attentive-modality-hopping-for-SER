@@ -52,7 +52,7 @@ class Vocab:
             return [ int(self.find_index(word[0])) ]
         
 
-    # 문장을 넣으면 list 로 index 를 return
+    # sentence --> return list_index
     def __call__(self, line):        
         """
         if type(line) is np.ndarray:
