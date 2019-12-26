@@ -2,8 +2,7 @@
 
 ## This repository contains the source code used in the following paper,
 
-**ATTENTIVE MODALITY HOPPING MECHANISM FOR SPEECH EMOTION
-RECOGNITION**, <a href="http://arxiv.org/abs/1912.00846">[paper]</a>
+**Attentive Modality Hopping Mechanism for Speech Emotion Recognition**, <a href="http://arxiv.org/abs/1912.00846">[paper]</a>
 
 ----------
 
