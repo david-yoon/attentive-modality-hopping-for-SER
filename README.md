@@ -1,6 +1,6 @@
-# attentive modality hopping for speech emotion recognition
+# attentive-modality-hopping-for-SER
 
-## This repository contains the source code used in the following paper,
+This repository contains the source code used in the following paper,
 
 **Attentive Modality Hopping Mechanism for Speech Emotion Recognition**, <a href="http://arxiv.org/abs/1912.00846">[paper]</a>
 
