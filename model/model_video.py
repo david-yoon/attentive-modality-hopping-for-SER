@@ -21,7 +21,7 @@ class ModelVideo:
                  num_layer, lr,
                  hidden_dim,
                  dr,
-                 bi, attn, ltc
+                 bi, attn
                 ):
         
         self.batch_size = batch_size
@@ -36,8 +36,6 @@ class ModelVideo:
         self.bi = bi
         self.attn = attn
         
-        self.ltc = ltc
-        self.dr_video_ltc = LTC_DR_VIDEO
         
         self.encoder_inputs = []
         self.encoder_seq_length =[]
@@ -66,8 +64,6 @@ class ModelVideo:
             self.y_labels        = tf.compat.v1.placeholder(tf.float32, shape=[self.batch_size, N_CATEGORY], name="label")
             self.dr_video_in_ph  = tf.compat.v1.placeholder(tf.float32, name="dropout_video_in")
             self.dr_video_out_ph = tf.compat.v1.placeholder(tf.float32, name="dropout_video_out")
-
-            self.dr_video_ltc_ph = tf.compat.v1.placeholder(tf.float32, name="dropout_ltc")
 
 
     def _create_gru_model(self):
@@ -149,19 +145,6 @@ class ModelVideo:
                                                                 )
 
 
-    def _add_LTC_method(self):
-        from model_sy_ltc import sy_ltc
-        print ('[launch-video] apply LTC method, LTC_DR: ', LTC_DR_VIDEO)    
-
-        with tf.name_scope('video_LTC') as scope:
-            self.final_encoder, self.final_encoder_dimension = sy_ltc( batch_size      = self.batch_size,
-                                                                      topic_size       = LTC_N_TOPIC_VIDEO,
-                                                                      memory_dim       = self.final_encoder_dimension,
-                                                                      input_hidden_dim = self.final_encoder_dimension,
-                                                                      input_encoder    = self.final_encoder,
-                                                                      dr_memory_prob   =self.dr_video_ltc_ph
-                                                                     )
-
 
     def _create_output_layers(self):
         print ('[launch-video] create output projection layer')       
@@ -238,7 +221,6 @@ class ModelVideo:
         self._create_gru_model()            
         
         if self.attn       : self._add_attn()
-        if self.ltc        : self._add_LTC_method()
         
         self._create_output_layers()
         self._create_optimizer()
@@ -252,6 +234,5 @@ class ModelVideo:
         self._create_gru_model()            
         
         if self.attn       : self._add_attn()
-        if self.ltc        : self._add_LTC_method()
         
         

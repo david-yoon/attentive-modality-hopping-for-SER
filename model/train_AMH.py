@@ -131,12 +131,6 @@ def train_model(model, batch_gen, num_train_steps, valid_freq, is_save=0, graph_
                         if is_save is 1:
                             saver.save(sess, 'save/' + graph_dir_name + '/', model.global_step.eval() )
                             
-                            
-                        if float(target) > float(QUICK_SAVE_THRESHOLD):
-                            print("[INFO] apply quick save")
-                            saver.save(sess, 'save/' + graph_dir_name + '/', model.global_step.eval() )
-                            
-
                         early_stop_count = MAX_EARLY_STOP_COUNT
                         
                         test_ce, test_WA, test_UA, _, _ = run_test(sess=sess,
@@ -199,12 +193,12 @@ def create_dir(dir_name):
         
 def main(data_path, batch_size, lr, type_modality,
          encoder_size_audio, num_layer_audio, hidden_dim_audio, dr_audio,
-         bi_audio, attn_audio, ltc_audio,
+         bi_audio, attn_audio,
          encoder_size_text, num_layer_text, hidden_dim_text, dr_text,
          use_glove,
-         bi_text, attn_text, ltc_text,
+         bi_text, attn_text,
          encoder_size_video, num_layer_video, hidden_dim_video, dr_video,
-         bi_video, attn_video, ltc_video,
+         bi_video, attn_video,
          hop,
          num_train_steps, is_save, graph_dir_name
          ):
@@ -230,7 +224,6 @@ def main(data_path, batch_size, lr, type_modality,
                             dr_audio = dr_audio,
                             bi_audio = bi_audio,
                             attn_audio = attn_audio,
-                            ltc_audio = ltc_audio,
                             encoder_size_text = encoder_size_text,        # Text
                             num_layer_text = num_layer_text,
                             hidden_dim_text = hidden_dim_text,                
@@ -239,14 +232,12 @@ def main(data_path, batch_size, lr, type_modality,
                             use_glove = use_glove,
                             bi_text = bi_text,
                             attn_text = attn_text, 
-                            ltc_text = ltc_text,
                             encoder_size_video = encoder_size_video,    # Video
                             num_layer_video = num_layer_video,
                             hidden_dim_video = hidden_dim_video,                
                             dr_video = dr_video,
                             bi_video = bi_video,
-                            attn_video = attn_video,
-                            ltc_video = ltc_video
+                            attn_video = attn_video
                             )
 
     model.build_graph()
@@ -276,7 +267,6 @@ if __name__ == '__main__':
     p.add_argument('--dr_audio', type=float, default=1.0)
     p.add_argument('--bi_audio', type=int, default=0)
     p.add_argument('--attn_audio', type=int, default=0)
-    p.add_argument('--ltc_audio', type=int, default=0)
     
     # Text
     p.add_argument('--use_glove', type=int, default=0)
@@ -286,7 +276,6 @@ if __name__ == '__main__':
     p.add_argument('--dr_text', type=float, default=1.0)
     p.add_argument('--bi_text', type=int, default=0)
     p.add_argument('--attn_text', type=int, default=0)
-    p.add_argument('--ltc_text', type=int, default=0)
     
     # Video
     p.add_argument('--encoder_size_video', type=int, default=25)
@@ -295,7 +284,6 @@ if __name__ == '__main__':
     p.add_argument('--dr_video', type=float, default=1.0) 
     p.add_argument('--bi_video', type=int, default=0)
     p.add_argument('--attn_video', type=int, default=0)
-    p.add_argument('--ltc_video', type=int, default=0)
     
 
     embed_train = ''
@@ -329,15 +317,6 @@ if __name__ == '__main__':
                     '_attnV' + str(args.attn_video)
     
     
-    if args.ltc_audio == 1:
-        graph = graph + '_ltcA' + str(args.ltc_audio)
-    
-    if args.ltc_text == 1:
-        graph = graph + '_ltcT' + str(args.ltc_text)
-    
-    if args.ltc_video == 1:
-        graph = graph + '_ltcV' + str(args.ltc_video)
-    
     
     if  IS_AUDIO_RESIDUAL:
         print('[INFO] audio-residual')
@@ -368,7 +347,6 @@ if __name__ == '__main__':
     print('[INFO]-A dr:\t\t', args.dr_audio)
     print('[INFO]-A bi:\t\t', args.bi_audio)
     print('[INFO]-A attn:\t\t', args.attn_audio)
-    print('[INFO]-A ltc:\t\t', args.ltc_audio)
     
     print('[INFO]-T encoder_size:\t', args.encoder_size_text)
     print('[INFO]-T num_layer:\t', args.num_layer_text)
@@ -376,7 +354,6 @@ if __name__ == '__main__':
     print('[INFO]-T dr:\t\t', args.dr_text)
     print('[INFO]-T bi:\t\t', args.bi_text)
     print('[INFO]-T attn:\t\t', args.attn_text)
-    print('[INFO]-T ltc:\t\t', args.ltc_text)
     
     print('[INFO]-V encoder_size:\t', args.encoder_size_video)
     print('[INFO]-V num_layer:\t', args.num_layer_video)
@@ -384,7 +361,6 @@ if __name__ == '__main__':
     print('[INFO]-V dr:\t\t', args.dr_video)
     print('[INFO]-V bi:\t\t', args.bi_video)
     print('[INFO]-V attn:\t\t', args.attn_video)
-    print('[INFO]-V ltc:\t\t', args.ltc_video)
     
     
     main(
@@ -398,7 +374,6 @@ if __name__ == '__main__':
         dr_audio = args.dr_audio,
         bi_audio=args.bi_audio,
         attn_audio=args.attn_audio,
-        ltc_audio=args.ltc_audio,
         use_glove = args.use_glove,                    # Text
         encoder_size_text = args.encoder_size_text,
         num_layer_text = args.num_layer_text,
@@ -406,14 +381,12 @@ if __name__ == '__main__':
         dr_text = args.dr_text,
         bi_text =args.bi_text,
         attn_text =args.attn_text,
-        ltc_text =args.ltc_text,
         encoder_size_video = args.encoder_size_video,  # Video
         num_layer_video = args.num_layer_video,
         hidden_dim_video = args.hidden_dim_video,
         dr_video = args.dr_video,
         bi_video=args.bi_video,
         attn_video=args.attn_video,
-        ltc_video=args.ltc_video,
         hop=args.hop,
         num_train_steps = args.num_train_steps,
         is_save = args.is_save,

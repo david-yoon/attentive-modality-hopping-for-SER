@@ -11,8 +11,8 @@ DATA_TRAIN_MFCC_SEQN   = 'train_audio_seqN.npy'
 DATA_TRAIN_PROSODY     = 'train_audio_prosody.npy'
 DATA_TRAIN_LABEL       = 'train_label.npy'
 DATA_TRAIN_TRANS       = 'train_nlp_trans.npy'
-DATA_TRAIN_VIDEO        = 'train_video.npy'
-DATA_TRAIN_VIDEO_SEQN   = 'train_video_seqN.npy'
+DATA_TRAIN_VIDEO       = 'train_video.npy'
+DATA_TRAIN_VIDEO_SEQN  = 'train_video_seqN.npy'
 
 
 DATA_DEV_MFCC          = 'dev_audio_mfcc.npy'
@@ -35,7 +35,6 @@ DATA_TEST_VIDEO_SEQN   = 'test_video_seqN.npy'
 DIC                    = 'dic.pkl'
 GLOVE                  = 'W_embedding.npy'
 
-QUICK_SAVE_THRESHOLD   = 0.90
 N_CATEGORY             = 7
 
 ################################
@@ -69,27 +68,9 @@ USE_FF    = False
 ################################
 #     Model
 ################################
-
 IS_AUDIO_RESIDUAL      = False
 IS_TEXT_RESIDUAL       = False
 IS_VIDEO_RESIDUAL      = False
-
-LTC_N_TOPIC_AUDIO = 2
-LTC_MEM_DIM_AUDIO = 256
-LTC_DR_AUDIO      = 0.8
-
-LTC_N_TOPIC_VIDEO = 2
-LTC_MEM_DIM_VIDEO = 256
-LTC_DR_VIDEO      = 0.8
-
-LTC_N_TOPIC_TEXT = 2
-LTC_MEM_DIM_TEXT = 256
-LTC_DR_TEXT      = 0.8
-
-APPLY_LTC_MULTI   = False   # special case (controlled here)
-LTC_N_TOPIC_MULTI = 2
-LTC_MEM_DIM_MULTI = 256
-LTC_DR_MULTI      = 1.0
 
 
 ################################
@@ -100,7 +81,7 @@ LTC_DR_MULTI      = 1.0
 WA = 'weighted'
 UA = 'macro'
 IS_TRAGET_OBJECTIVE_WA = True
-
+USE_PRECISION          = True
 
 ################################
 #   ETC

@@ -31,19 +31,19 @@ class ModelAMH:
                  num_layer_audio,
                  hidden_dim_audio,
                  dr_audio,
-                 bi_audio, attn_audio, ltc_audio,
+                 bi_audio, attn_audio,
                  dic_size,             # for text
                  use_glove,
                  encoder_size_text,
                  num_layer_text,
                  hidden_dim_text,
                  dr_text,
-                 bi_text, attn_text, ltc_text,
+                 bi_text, attn_text,
                  encoder_size_video,  # for video
                  num_layer_video,
                  hidden_dim_video,
                  dr_video,
-                 bi_video, attn_video, ltc_video,
+                 bi_video, attn_video,
                  type_modality=4,
                  hop=1
                 ):
@@ -59,7 +59,6 @@ class ModelAMH:
         
         self.bi_audio = bi_audio
         self.attn_audio = attn_audio
-        self.ltc_audio = ltc_audio
         
         # for text        
         self.dic_size = dic_size
@@ -74,7 +73,6 @@ class ModelAMH:
                 
         self.bi_text = bi_text
         self.attn_text = attn_text
-        self.ltc_text = ltc_text
         
         self.hop = int(hop)
 
@@ -90,7 +88,6 @@ class ModelAMH:
         
         self.bi_video = bi_video
         self.attn_video = attn_video
-        self.ltc_video = ltc_video
         
         
         # common        
@@ -130,8 +127,7 @@ class ModelAMH:
                                                         lr = self.lr,
                                                         dr = self.dr_audio,
                                                         bi = self.bi_audio,
-                                                        attn = self.attn_audio,
-                                                        ltc = self.ltc_audio
+                                                        attn = self.attn_audio
                                                         )
         self.model_audio.build_graph_multi()
         
@@ -146,8 +142,7 @@ class ModelAMH:
                                                         lr = self.lr,
                                                         dr= self.dr_text,
                                                         bi = self.bi_text,
-                                                        attn = self.attn_text,
-                                                        ltc = self.ltc_text
+                                                        attn = self.attn_text
                                                         )
         
         self.model_text.build_graph_multi()
@@ -161,8 +156,7 @@ class ModelAMH:
                                                         lr = self.lr,
                                                         dr = self.dr_video,
                                                         bi = self.bi_video,
-                                                        attn = self.attn_video,
-                                                        ltc = self.ltc_video
+                                                        attn = self.attn_video
                                                         )
         self.model_video.build_graph_multi()
         
@@ -360,20 +354,6 @@ class ModelAMH:
             self.final_encoder_dimension = self.modality_1_final_encoder_dimension + self.modality_2_final_encoder_dimension + self.modality_3_final_encoder_dimension
     
     
-    def _add_LTC_method(self):
-        from model_sy_ltc import sy_ltc
-        print ('[launch-text] apply LTC method')
-
-        with tf.name_scope('text_LTC') as scope:
-            self.final_encoder, self.final_encoder_dimension = sy_ltc( batch_size = self.batch_size,
-                                                                      topic_size = LTC_N_TOPIC_MULTI,
-                                                                      memory_dim = LTC_MEM_DIM_MULTI,
-                                                                      input_hidden_dim = self.final_encoder_dimension,
-                                                                      input_encoder = self.final_encoder,
-                                                                      dr_memory_prob= LTC_DR_MULTI
-                                                                     )
-            
-    
             
     def _add_prosody(self):
         print ('[launch-audio] add prosody feature, dim: ' + str(N_AUDIO_PROSODY))
@@ -482,8 +462,6 @@ class ModelAMH:
             print('[ERROR] Not Implemented')
             sys.exit()
         
-        if APPLY_LTC_MULTI : self._add_LTC_method()
-            
         if USE_FF    : self._create_output_layers_ff()
         else         : self._create_output_layers()
         

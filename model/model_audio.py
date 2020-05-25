@@ -21,7 +21,7 @@ class ModelAudio:
                  num_layer, lr,
                  hidden_dim,
                  dr,
-                 bi, attn, ltc
+                 bi, attn
                 ):
         
         self.batch_size = batch_size
@@ -35,9 +35,6 @@ class ModelAudio:
         
         self.bi = bi
         self.attn = attn
-        
-        self.ltc = ltc
-        self.dr_audio_ltc = LTC_DR_AUDIO
         
         self.encoder_inputs = []
         self.encoder_seq_length =[]
@@ -68,7 +65,6 @@ class ModelAudio:
             self.dr_audio_in_ph  = tf.compat.v1.placeholder(tf.float32, name="dropout_audio_in")
             self.dr_audio_out_ph = tf.compat.v1.placeholder(tf.float32, name="dropout_audio_out")
 
-            self.dr_audio_ltc_ph = tf.compat.v1.placeholder(tf.float32, name="dropout_ltc")
     
     def test_cross_entropy_with_logit(self, logits, labels):
         x = logits
@@ -161,21 +157,6 @@ class ModelAudio:
         
         
         
-    def _add_LTC_method(self):
-        from model_sy_ltc import sy_ltc
-        print ('[launch-audio] apply LTC method, LTC_DR: ', LTC_DR_AUDIO)    
-
-        with tf.name_scope('audio_LTC') as scope:
-            self.final_encoder, self.final_encoder_dimension = sy_ltc( batch_size = self.batch_size,
-                                                                      topic_size = LTC_N_TOPIC_AUDIO,
-                                                                      memory_dim = self.final_encoder_dimension,
-                                                                      input_hidden_dim = self.final_encoder_dimension,
-                                                                      input_encoder = self.final_encoder,
-                                                                      dr_memory_prob=self.dr_audio_ltc_ph
-                                                                     )
-        
-       
-        
     def _add_prosody(self):
         print ('[launch-audio] add prosody feature, dim: ' + str(N_AUDIO_PROSODY))
         self.final_encoder = tf.concat( [self.final_encoder, self.encoder_prosody], axis=1 )
@@ -257,7 +238,6 @@ class ModelAudio:
         self._create_gru_model()            
         
         if self.attn       : self._add_attn()
-        if self.ltc : self._add_LTC_method()
         
         self._add_prosody()
         
@@ -273,6 +253,5 @@ class ModelAudio:
         self._create_gru_model()            
         
         if self.attn       : self._add_attn()
-        if self.ltc : self._add_LTC_method()
 
             

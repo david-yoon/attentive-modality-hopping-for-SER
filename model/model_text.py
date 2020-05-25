@@ -2,7 +2,6 @@
 
 """
 what    : Single Encoder Model for text - bidirectional
-test     : LTC
 data    : IEMOCAP
 """
 import tensorflow as tf
@@ -25,7 +24,7 @@ class ModelText:
                  num_layer, lr,
                  hidden_dim,
                  dr,
-                 bi, attn, ltc
+                 bi, attn
                 ):
         
         self.dic_size = dic_size
@@ -41,9 +40,6 @@ class ModelText:
         
         self.bi = bi
         self.attn = attn
-        
-        self.ltc = ltc
-        self.dr_text_ltc = LTC_DR_TEXT
         
         self.encoder_inputs = []
         self.encoder_seq_length =[]
@@ -78,8 +74,6 @@ class ModelText:
             
             self.dr_text_in_ph   = tf.compat.v1.placeholder(tf.float32, name="dropout_text_in")
             self.dr_text_out_ph  = tf.compat.v1.placeholder(tf.float32, name="dropout_text_out")
-            
-            self.dr_text_ltc_ph  = tf.compat.v1.placeholder(tf.float32, name="dropout_ltc")
 
              # for using pre-trained embedding
             self.embedding_placeholder = tf.compat.v1.placeholder(tf.float32, shape=[self.dic_size, self.embed_dim], name="embedding_placeholder")
@@ -190,19 +184,6 @@ class ModelText:
                                                                 )
         
         
-    def _add_LTC_method(self):
-        from model_sy_ltc import sy_ltc
-        print ('[launch-text] apply LTC method, LTC_DR: ',LTC_DR_TEXT)
-
-        with tf.name_scope('text_LTC') as scope:
-            self.final_encoder, self.final_encoder_dimension = sy_ltc( batch_size = self.batch_size,
-                                                                      topic_size = LTC_N_TOPIC_TEXT,
-                                                                      memory_dim = self.final_encoder_dimension,
-                                                                      input_hidden_dim = self.final_encoder_dimension,
-                                                                      input_encoder = self.final_encoder,
-                                                                      dr_memory_prob= self.dr_text_ltc_ph
-                                                                     )
-
         
     def _create_output_layers(self):
         print ('[launch-text] create output projection layer')
@@ -281,7 +262,6 @@ class ModelText:
         self._create_gru_model() 
         
         if self.attn      : self._add_attn()
-        if self.ltc : self._add_LTC_method()
         
         self._create_output_layers()
         self._create_optimizer()
@@ -298,4 +278,3 @@ class ModelText:
         self._create_gru_model() 
         
         if self.attn      : self._add_attn()
-        if self.ltc :  self._add_LTC_method()

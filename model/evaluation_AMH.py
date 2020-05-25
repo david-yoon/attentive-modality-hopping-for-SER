@@ -8,6 +8,7 @@ data    : IEMOCAP
 from tensorflow.core.framework import summary_pb2
 from random import shuffle
 import numpy as np
+from measure_WA_UA import *
 from sklearn.metrics import precision_score
 from sklearn.metrics import recall_score
 
@@ -103,15 +104,23 @@ def run_test(sess, model, batch_gen, data):
             f.write( ' '.join( [str(x) for x in list_label] ) )
 
 
-    # macro : unweighted mean
-    # weighted : ignore class unbalance
-    accr_WA = precision_score(y_true=list_label,
-                           y_pred=list_pred,
-                           average=WA)
+    if USE_PRECISION:
+        # macro : unweighted mean
+        # weighted : ignore class unbalance
+        accr_WA = precision_score(y_true=list_label,
+                               y_pred=list_pred,
+                               average=WA)
+
+        accr_UA = precision_score(y_true=list_label,
+                               y_pred=list_pred,
+                               average=UA)
     
-    accr_UA = precision_score(y_true=list_label,
-                           y_pred=list_pred,
-                           average=UA)
+    else:
+        accr_WA = weighted_accuracy(list_y_true=list_label,
+                                        list_y_pred=list_pred)
+
+        accr_UA = unweighted_accuracy(list_y_true=list_label,
+                                          list_y_pred=list_pred)
     
     sum_batch_ce = np.sum( list_batch_ce )
     
