@@ -5,6 +5,46 @@ This repository contains the source code used in the following paper,
 **Attentive Modality Hopping Mechanism for Speech Emotion Recognition**, <a href="http://arxiv.org/abs/1912.00846">[paper]</a>
 
 ----------
+### [Notice]
+I recently found that I use the "precision" metric for the model evaluation.
+When I change the metric from "precision" to "accuracy," models show similar performance for the "weighted" case. However, models show lower performance for the "unweighted" case.
+This behavior is similarly observed for other models (MHA, MDRE). 
+
+I already revised the source code. You can change the metric at the "project_config.py."
+
+	USE_PRECISION = True   --> "precision" metric
+	USE_PRECISION = False  --> "accuracy" metric
+
+
+Precision (previously misreported as accuracy)
+
+|   Model   | Modality | Weighted    | Unweighted  |
+|:---------:|:--------:|-------------|-------------|
+|  MDRE[9]  |    A+T   | 0.557 ± 0.018 | 0.536 ± 0.030 |
+|  MDRE[9]  |    T+V   | 0.585 ± 0.040 | 0.561 ± 0.046 |
+|  MDRE[9]  |    A+V   | 0.481 ± 0.049 | 0.415 ± 0.047 |
+|  MHA[12]  |    T+V   | 0.583 ± 0.025 | 0.555 ± 0.040 |
+|  MHA[12]  |    T+V   | 0.590 ± 0.017 | 0.560 ± 0.032 |
+|  MHA[12]  |    A+V   | 0.490 ± 0.049 | 0.434 ± 0.060 |
+|  MDRE[9]  |   A+T+V  | 0.602 ± 0.033 | 0.575 ± 0.046 |
+| AMH(ours) |   A+T+V  | 0.624 ± 0.022 | 0.597 ± 0.040 |
+
+
+Accuracy (revised results)
+
+|   Model   | Modality | Weighted    | Unweighted |
+|:---------:|:--------:|-------------|-------------|
+|  MDRE[9]  |    A+T   | 0.498 ± 0.059 | 0.418 ± 0.077 |
+|  MDRE[9]  |    T+V   | 0.579 ± 0.015 | 0.524 ± 0.021 |
+|  MDRE[9]  |    A+V   | 0.477 ± 0.025 | 0.376 ± 0.024 |
+|  MHA[12]  |    T+V   | 0.543 ± 0.026 | 0.491 ± 0.028 |
+|  MHA[12]  |    T+V   | 0.580 ± 0.019 | 0.526 ± 0.024 |
+|  MHA[12]  |    A+V   | 0.471 ± 0.047 | 0.371 ± 0.042 |
+|  MDRE[9]  |   A+T+V  | 0.564 ± 0.043 | 0.490 ± 0.056 |
+| AMH(ours) |   A+T+V  | 0.617 ± 0.016 | 0.547 ± 0.025 |
+
+
+----------
 
 ### [requirements]
 	tensorflow==1.14 (tested on cuda-10.1, cudnn-7.6)
