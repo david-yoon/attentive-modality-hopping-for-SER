@@ -60,7 +60,9 @@ Accuracy (revised results)
 
 
 ### [preprocessing (our approach)]
-- Please refer our previous work that use same preprocessing (audio, text): <a href="https://github.com/david-yoon/multimodal-speech-emotion">[click] </a>
+
+- <a href="https://forms.gle/HBXaQWRxJhnopVHV9">Get the preprocessed dataset [application link]</a>
+	>If you want to download the "preprocessed dataset," please ask the license to the IEMOCAP team first.
 - For video modality:
 	- We first split each video frame into two sub-frames so that each segment contains only one actor.
 	- Then we crop the center of each frame with size 224*224 to focus on the actor and to remove background in the video frame.
@@ -106,9 +108,11 @@ Accuracy (revised results)
 
 ### [cite]
 - Please cite our paper, when you use our code | model | dataset
-	> @article{yoon2019attentive,<br>
-  title={Attentive Modality Hopping Mechanism for Speech Emotion Recognition},<br>
+	> @inproceedings{yoon2020attentive,<br>
+  title={Attentive modality hopping mechanism for speech emotion recognition},<br>
   author={Yoon, Seunghyun and Dey, Subhadeep and Lee, Hwanhee and Jung, Kyomin},<br>
-  journal={arXiv preprint arXiv:1912.00846},<br>
-  year={2019}<br>
+  booktitle={ICASSP 2020-2020 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},<br>
+  pages={3362--3366},<br>
+  year={2020},<br>
+  organization={IEEE}<br>
 }
