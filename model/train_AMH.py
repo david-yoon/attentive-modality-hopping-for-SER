@@ -101,8 +101,8 @@ def train_model(model, batch_gen, num_train_steps, valid_freq, is_save=0, graph_
                 summary = train_step(sess, model, batch_gen)
                 writer.add_summary( summary, global_step=model.global_step.eval() )
                 
-            except:
-                print ("excepetion occurs in train step")
+            except Exception as e:
+                print ("excepetion occurs in train step", e)
                 pass
                 
             
